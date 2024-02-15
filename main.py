@@ -55,6 +55,8 @@ def draw_board(board):
             if piece != "":
                 screen.blit(piece_images[piece], pygame.Rect(col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
 
+
+# Function to get legal moves for a pawn
 # Function to get legal moves for a pawn
 def get_pawn_moves(board, row, col):
     moves = []
@@ -63,20 +65,21 @@ def get_pawn_moves(board, row, col):
             moves.append((row - 1, col))
             if row == 6 and board[row - 2][col] == "":
                 moves.append((row - 2, col))
-        if row > 0 and col > 0 and board[row - 1][col - 1][0] == 'b':
+        if row > 0 and col > 0 and board[row - 1][col - 1] and board[row - 1][col - 1][0] == 'b':
             moves.append((row - 1, col - 1))
-        if row > 0 and col < 7 and board[row - 1][col + 1][0] == 'b':
+        if row > 0 and col < 7 and board[row - 1][col + 1] and board[row - 1][col + 1][0] == 'b':
             moves.append((row - 1, col + 1))
     else:  # Black pawn
         if row < 7 and board[row + 1][col] == "":
             moves.append((row + 1, col))
             if row == 1 and board[row + 2][col] == "":
                 moves.append((row + 2, col))
-        if row < 7 and col > 0 and board[row + 1][col - 1][0] == 'w':
+        if row < 7 and col > 0 and board[row + 1][col - 1] and board[row + 1][col - 1][0] == 'w':
             moves.append((row + 1, col - 1))
-        if row < 7 and col < 7 and board[row + 1][col + 1][0] == 'w':
+        if row < 7 and col < 7 and board[row + 1][col + 1] and board[row + 1][col + 1][0] == 'w':
             moves.append((row + 1, col + 1))
     return moves
+
 
 # Function to get legal moves for a knight
 def get_knight_moves(board, row, col):
@@ -175,6 +178,7 @@ def get_legal_moves(board, row, col):
 
 
 # Main game loop
+# Main game loop
 def main():
     board = starting_board
     selected_square = None
@@ -184,9 +188,9 @@ def main():
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                row, col = pygame.mouse.get_pos()
-                row //= SQUARE_SIZE
-                col //= SQUARE_SIZE
+                mouse_pos = pygame.mouse.get_pos()
+                col = mouse_pos[0] // SQUARE_SIZE
+                row = mouse_pos[1] // SQUARE_SIZE
                 if selected_square is None:
                     if board[row][col] != "":
                         selected_square = (row, col)
@@ -197,12 +201,11 @@ def main():
         screen.fill((255, 255, 255))
         draw_board(board)
         if selected_square is not None:
-            pygame.draw.rect(screen, (0, 255, 0), (
-            selected_square[1] * SQUARE_SIZE, selected_square[0] * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE), 4)
+            pygame.draw.rect(screen, (0, 255, 0), (selected_square[1] * SQUARE_SIZE, selected_square[0] * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE), 4)
         pygame.display.flip()
         clock.tick(FPS)
-
 
 # Entry point of the program
 if __name__ == "__main__":
     main()
+
