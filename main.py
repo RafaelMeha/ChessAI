@@ -176,12 +176,11 @@ def get_legal_moves(board, row, col):
         return get_king_moves(board, row, col)
     return []
 
-
-# Main game loop
 # Main game loop
 def main():
     board = starting_board
     selected_square = None
+    is_white_turn = True  # Initialize with white's turn
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -192,11 +191,17 @@ def main():
                 col = mouse_pos[0] // SQUARE_SIZE
                 row = mouse_pos[1] // SQUARE_SIZE
                 if selected_square is None:
-                    if board[row][col] != "":
+                    if (is_white_turn and board[row][col] != "" and board[row][col][0] == 'w') or \
+                            (not is_white_turn and board[row][col] != "" and board[row][col][0] == 'b'):
                         selected_square = (row, col)
                 else:
                     if move_piece(board, selected_square, (row, col)):
                         selected_square = None
+                        is_white_turn = not is_white_turn  # Switch turns
+                    else:
+                        if (is_white_turn and board[row][col] != "" and board[row][col][0] == 'w') or \
+                                (not is_white_turn and board[row][col] != "" and board[row][col][0] == 'b'):
+                            selected_square = (row, col)
 
         screen.fill((255, 255, 255))
         draw_board(board)
