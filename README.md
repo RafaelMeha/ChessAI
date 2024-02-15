@@ -4,7 +4,7 @@ This is a simple chess game implemented in Python using the Pygame library.
 
 ## Description
 
-This project aims to create a playable chess game with basic rules and functionalities. It provides a graphical interface for users to play against each other on a standard chessboard.
+This project aims to create a playable chess game against an AI. It provides a graphical interface for users to play against each other on a standard chessboard.
 
 ## Features
 
